@@ -1,4 +1,5 @@
 Simple Flask Todo App using SQLAlchemy and SQLite database.
+![image](https://user-images.githubusercontent.com/46083261/184544019-2b0d9eda-5592-482d-b672-07b2b164de2e.png)
 
 ### Setup
 Create project with virtual environment

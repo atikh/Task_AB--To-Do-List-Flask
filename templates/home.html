@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App</title>
+
+    <link rel="stylesheet" href="static\Stylesheet.css">
+    <script src="static\JSD.js"></script>
+</head>
+
+<body>
+
+
+    <div style="margin-top: 50px;" class="ui container">
+        <h1 class="ui center aligned header">To Do List</h1>
+        <form class="ui form" action="/add" method="post" id="myDIV" name="form" onsubmit="return validateForm()">
+            <div class="field" >
+                <label>Please complete all fields </label>
+                <input type="text" name="title" placeholder="Task title..." ><br>
+                <input type="text" name="task_description" placeholder="Task_description..."><br>
+                <input type="email" name="email_address" placeholder="email_address..."><br>
+                <input type="date" name="deadline" placeholder="deadline..."><br><br>
+
+                <p>Choose your priority level:</p>
+                <p><input type="radio" name="priority_level" value="Low"><label for="Low" >Low</label>&nbsp;&nbsp;
+                    <input type="radio" name="priority_level" value="Normal"><label for="Normal" >Normal</label>&nbsp;&nbsp;
+                    <input type="radio" name="priority_level" value="Important"><label for="Important" >Important</label>&nbsp;&nbsp;
+                    <input type="radio" name="priority_level" value="Critical"><label for="Critical" >Critical</label></p>
+            </div>
+            <button class="ui green label" type="submit">Add</button>
+        </form><br>
+        <button class="ui red label" onclick="myFunction()" id="myDIVCancel">Cancel</button>
+        <button class="ui yellow button" onclick="myFunction()" id="myDIV2">Submit new task</button>
+        <hr>
+
+        {% for todo in todo_list %}
+        <div class="ui segment">
+            <p class="ui big header">{{todo.title }} | {{todo.priority_level }}</p>
+            <p> Description of task : {{ todo.task_description }}  </p>
+            <p> Deadline : {{ todo.deadline }}  /  Responsible Person: {{ todo.email_address }} </p><br>
+
+            {% if todo.complete == False %}
+            <a class="ui gray label"href="/update/{{ todo.id }}">Not Complete</a>
+            {% else %}
+            <a class="ui green label" href="/update/{{ todo.id }}">completed</a>
+            {% endif %}
+
+            <a class="ui red label" href="/delete/{{ todo.id }}" id="deleteicon" onclick="return confirm('Are you sure you want to delete this task?');" >Delete</a>
+        </div>
+        {% endfor %}
+    </div>
+
+
+            <br>
+           <center> <p class="ui red label"> Design and Implementation by Ati </p>
+               <br>
+              <a href="https://github.com/atikh" class="ui green label"> Github profile link </a> </center>
+
+</body>
+</html>

@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 
@@ -32,9 +34,27 @@ def home():
         # the redirect can be to the same route or somewhere else
         return redirect(url_for('welcome'))
 
-    # show the form, it wasn't submitted
-
     todo_list = Todo.query.all()
+    #Convert to CSV
+
+    import csv
+    import sqlite3
+
+    conn = sqlite3.connect('tododb.sqlite')
+    cursor = conn.cursor()
+    cursor.execute("select * from todo;")
+    with open("out.csv", 'w', newline='') as csv_file:
+        csv_writer = csv.writer(csv_file)
+        csv_writer.writerow([i[0] for i in cursor.description])
+        csv_writer.writerows(cursor)
+    conn.close()
+    with open('out.csv', 'r') as f_in, open('out.txt', 'w') as f_out:
+        # 2. Read the CSV file and store in variable
+        content = f_in.read()
+        # 3. Write the content into the TXT file
+        f_out.write(content)
+
+    os.remove('out.csv')
     return render_template("home.html", todo_list=todo_list)
 
 
@@ -48,11 +68,9 @@ def add():
 
     new_todo = Todo(title=title,task_description=task_description, email_address=email_address, priority_level=priority_level,
                     deadline=deadline, complete=False)
-    if not title:
-        print("NO")
-    else:
-        db.session.add(new_todo)
-        db.session.commit()
+
+    db.session.add(new_todo)
+    db.session.commit()
     return redirect(url_for("home"))
 
 
